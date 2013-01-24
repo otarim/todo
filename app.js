@@ -6,7 +6,7 @@ var app = app || {};
 		defaults: function() {
 			return {
 				title: 'empty...',
-				order: app.Model.nextOrder();
+				order: todos.nextOrder();
 				done: false;
 			}
 		}
@@ -46,8 +46,21 @@ var app = app || {};
 			return this.without.apply(this,this.done())
 		}
 
-		// 
+		//
+		nextOrder: function() {
+			if(!this.get('order')) return 1;
+			// 最后一个元素的order+1
+			else this.last().get('order') + 1;
+		}
+
+		// 根据order排序 通过pluck(key)返回key对应的value
+		comparator: function(todo) {
+			return todo.get('order');
+		} 
 	})
+
+	// 实例化collection
+	var todos = new app.Collection;
 
 	app.View = Backbone.View.extend({
 
