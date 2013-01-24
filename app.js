@@ -32,7 +32,21 @@ var app = app || {};
 		
 		model: app.Model,
 
-		
+		localStorage: new Backbone.LocalStorage("todos-backbone"),
+
+		done: function() {
+			return this.filter(function(todo){
+				// todo == this 回调函数执行后返回真的元素将会被保留返回一个新的数组
+				return todo.get('done')
+			})
+		}
+
+		// 将this.done返回的数组(使用apply将数组分离为一个个的实参)从todolist中除去然后返回
+		remain: function() {
+			return this.without.apply(this,this.done())
+		}
+
+		// 
 	})
 
 	app.View = Backbone.View.extend({
